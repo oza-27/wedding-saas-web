@@ -12,10 +12,10 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('renders the welcome heading', async () => {
+  it('renders the application outlet', async () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect((fixture.nativeElement as HTMLElement).querySelector('h1')?.textContent).toContain('Every detail');
+    expect((fixture.nativeElement as HTMLElement).querySelector('router-outlet')).toBeTruthy();
   });
 });

@@ -1,39 +1,8 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
 html {
   height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  @include mat.theme((color: (primary: mat.$azure-palette, tertiary: mat.$blue-palette), typography: Roboto, density: 0));
 }
 
-body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
-  margin: 0;
-  height: 100%;
-}
-/* You can add global styles to this file, and also import other style files */
+:root{--wine:#6e283d;--wine-dark:#4e1d2c;--gold:#b6935c;--ivory:#f7f4ef;--paper:#fff;--ink:#302b2b;--muted:#777071;--line:#e9e4df;--error:#a32932;--success:#246b4a;--shadow:0 22px 70px #39261c12}*{box-sizing:border-box}body{margin:0;background:var(--ivory);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif}a{color:var(--wine);font-weight:600;text-decoration:none}a:hover{text-decoration:underline}button,input,select{font:inherit}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b6935c88;outline-offset:2px}.auth-shell{min-height:100dvh;display:grid;grid-template-columns:minmax(300px,42%) 1fr}.brand-panel{background:linear-gradient(155deg,#5a2134,#7e394b);color:#fff;padding:clamp(2rem,5vw,5rem);display:flex;flex-direction:column;justify-content:space-between;min-height:100dvh}.brand{color:inherit;display:flex;align-items:center;gap:.7rem;font-family:Georgia,serif;font-size:1.65rem}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border:1px solid #ffffff66;border-radius:50%;font-family:Georgia,serif}.brand-sub{display:block;font:600 .56rem "Segoe UI",sans-serif;letter-spacing:.16em;opacity:.7;margin-top:.18rem}.brand-copy{max-width:34rem}.eyebrow{color:var(--gold);font-size:.68rem;letter-spacing:.17em;font-weight:750}.brand-copy h1{font:400 clamp(2.5rem,5vw,4.4rem)/1.08 Georgia,serif;margin:1.3rem 0}.brand-copy p{max-width:27rem;color:#ffffffbd;line-height:1.8}.brand-foot{font-size:.78rem;color:#ffffffa8}.form-panel{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:3rem 2rem;position:relative}.form-wrap{width:min(100%,440px)}.form-wrap h2{font:400 clamp(2rem,4vw,2.8rem)/1.12 Georgia,serif;margin:.8rem 0}.intro{margin:0 0 2rem;color:var(--muted);line-height:1.65}.form-wrap form{display:grid;gap:1rem}.form-wrap label{display:grid;gap:.45rem;font-size:.83rem;font-weight:650}.form-wrap input,.form-wrap select{height:48px;width:100%;border:1px solid #dcd5d0;border-radius:8px;background:#fff;padding:0 .85rem;color:var(--ink)}.form-wrap input:focus,.form-wrap select:focus{border-color:var(--gold)}.form-wrap small,.optional{font-size:.72rem;color:var(--muted);font-weight:400}.row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.password{position:relative}.password input{padding-right:4rem}.eye{position:absolute;right:.55rem;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--wine);font-size:.75rem;font-weight:700;cursor:pointer}.small-link{font-size:.8rem;justify-self:end}.primary,.secondary{min-height:48px;border-radius:8px;padding:.8rem 1rem;font-weight:700;cursor:pointer}.primary{border:0;background:var(--wine);color:#fff}.primary:hover{background:var(--wine-dark)}.primary:disabled{opacity:.55;cursor:wait}.secondary{background:white;border:1px solid var(--line);color:var(--wine)}.fine{font-size:.8rem;color:var(--muted);text-align:center}.notice,.error{padding:.85rem 1rem;border-radius:8px;font-size:.84rem;line-height:1.5;margin-top:1rem}.notice{background:#eff6f0;color:var(--success)}.error{background:#fbefef;color:var(--error)}footer{position:absolute;bottom:1.1rem;color:#928b88;font-size:.7rem}.mobile-brand{display:none}.shell{min-height:100dvh;display:grid;grid-template-columns:250px 1fr;background:#f7f5f2}.sidebar{background:#fff;border-right:1px solid var(--line);padding:1.7rem 1.2rem;display:flex;flex-direction:column}.sidebar .brand{color:var(--wine);font-size:1.35rem}.sidebar nav{display:grid;gap:.5rem;margin-top:3rem}.sidebar nav a{padding:.8rem;border-radius:7px;color:#61595a}.sidebar nav a.active,.sidebar nav a:hover{background:#f7f0f1;color:var(--wine)}.side-note{margin-top:auto;color:var(--muted);font:italic 1rem Georgia,serif;line-height:1.6;padding:1rem}.main header{height:72px;background:white;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 2rem;color:#5e5756;font-size:.88rem}.user-menu{display:flex;align-items:center;gap:1rem}.user-menu button{background:none;border:0;color:var(--wine);font-weight:700;cursor:pointer}.content{padding:clamp(1.2rem,4vw,3.5rem)}.welcome-card,.tenant-page{max-width:800px;margin:1rem auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:clamp(1.5rem,5vw,3.5rem);box-shadow:var(--shadow)}.welcome-card h1,.tenant-page h1{font:400 clamp(2rem,5vw,3.2rem) Georgia,serif;margin:.8rem 0}.welcome-card>p,.tenant-page>p{max-width:550px;color:var(--muted);line-height:1.7}.workspace{display:flex;align-items:center;gap:1rem;border:1px solid var(--line);border-radius:10px;padding:1rem;margin-top:2rem}.workspace-icon,.tenant-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:10px;background:#f5edef;color:var(--wine);font-size:1.3rem}.workspace div,.tenant-info{display:grid;gap:.25rem;flex:1}.workspace small,.tenant-info small{font-size:.77rem;color:var(--muted)}.workspace a{font-size:.8rem}.tenant-page .small-link{display:block;margin-bottom:2rem}.tenant-list{display:grid;gap:.7rem;margin-top:1.5rem}.tenant-card{display:flex;align-items:center;gap:1rem;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:1rem;cursor:pointer;color:var(--ink)}.tenant-card:hover{border-color:var(--gold);box-shadow:0 8px 24px #39261c10}.tenant-card:disabled{opacity:.6;cursor:wait}.arrow{font-size:1.3rem;color:var(--gold)}@media(max-width:780px){.auth-shell{grid-template-columns:1fr}.brand-panel{display:none}.form-panel{min-height:100dvh;padding:4.5rem 1.25rem 3.5rem}.mobile-brand{display:flex;position:absolute;top:1.3rem;left:1.25rem;gap:.7rem;align-items:baseline;color:var(--wine);font:1.25rem Georgia,serif}.mobile-brand span{font:600 .55rem "Segoe UI",sans-serif;letter-spacing:.12em;color:var(--muted)}footer{bottom:.8rem}.shell{grid-template-columns:1fr}.sidebar{padding:.8rem 1rem;border-right:0;border-bottom:1px solid var(--line)}.sidebar .brand{font-size:1.1rem}.sidebar nav{display:flex;margin:.8rem 0 0}.sidebar nav a{padding:.5rem .8rem}.side-note{display:none}.main header{height:60px;padding:0 1rem;font-size:.78rem}.user-menu{gap:.5rem}.content{padding:1rem}.workspace{align-items:flex-start;flex-wrap:wrap}.workspace a{margin-left:60px}}@media(max-width:420px){.row{grid-template-columns:1fr}.mobile-brand span{display:none}.main header{align-items:flex-start;justify-content:center;flex-direction:column;height:auto;padding:.75rem 1rem;gap:.45rem}}

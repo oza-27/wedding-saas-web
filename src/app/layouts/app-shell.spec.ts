@@ -1,0 +1,25 @@
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { HomePage, TenantSelectionPage, AppShell } from './app-shell';
+import { AuthService, TokenStorageService } from '../core/auth/auth.service';
+import { TenantMembership, UserProfile } from '../core/auth/auth.models';
+import { environment } from '../../environments/environment';
+
+const base=`${environment.apiBaseUrl}/auth`;
+const tenants:TenantMembership[]=[{tenantId:'one',tenantName:'Planner fixture',tenantSlug:'planner',tenantType:1,membershipRole:'Owner',membershipStatus:'Active'},{tenantId:'two',tenantName:'Family fixture',tenantSlug:'family',tenantType:2,membershipRole:'Member',membershipStatus:'Active'}];
+const user:UserProfile={userId:'u',firstName:'Riley',lastName:'Example',email:'r@example.test',isEmailVerified:true,phoneNumber:null,isActive:true};
+describe('authenticated workspace screens',()=>{
+ let auth:AuthService;let storage:TokenStorageService;let http:HttpTestingController;
+ let returnUrl='/profile';
+ beforeEach(()=>{returnUrl='/profile';TestBed.configureTestingModule({imports:[HomePage,TenantSelectionPage,AppShell],providers:[provideRouter([]),provideHttpClient(),provideHttpClientTesting(),{provide:ActivatedRoute,useValue:{get snapshot(){return {queryParamMap:new URLSearchParams(`returnUrl=${encodeURIComponent(returnUrl)}`)};}}}]});auth=TestBed.inject(AuthService);storage=TestBed.inject(TokenStorageService);http=TestBed.inject(HttpTestingController);auth.reset();});
+ afterEach(()=>{http.verify();auth.reset();});
+ it('loads and displays only memberships returned by the backend',()=>{auth.getTenants().subscribe();http.expectOne(`${base}/tenants`).flush([tenants[1]]);const fixture=TestBed.createComponent(TenantSelectionPage);fixture.detectChanges();expect(fixture.nativeElement.textContent).toContain('Family fixture');expect(fixture.nativeElement.textContent).not.toContain('Planner fixture');});
+ it('shows the empty workspace state when the API returns no memberships',()=>{auth.tenants.set([]);const fixture=TestBed.createComponent(TenantSelectionPage);fixture.detectChanges();expect(fixture.nativeElement.textContent).toContain('No active workspaces');});
+ it('switches a selected membership and returns to the safe preserved destination',()=>{auth.tenants.set([tenants[0]]);const router=TestBed.inject(Router);const nav=vi.spyOn(router,'navigateByUrl').mockResolvedValue(true);const fixture=TestBed.createComponent(TenantSelectionPage);fixture.detectChanges();fixture.nativeElement.querySelector('.tenant-card').click();const r=http.expectOne(`${base}/switch-tenant`);expect(r.request.body).toEqual({tenantId:'one'});r.flush({accessToken:'a',refreshToken:'r',accessTokenExpiresAtUtc:''});expect(auth.currentTenant()).toEqual(tenants[0]);expect(nav).toHaveBeenCalledWith('/profile');});
+ it('rejects protocol-relative return destinations and uses home',()=>{returnUrl='//example.invalid';auth.tenants.set([tenants[0]]);const router=TestBed.inject(Router);const nav=vi.spyOn(router,'navigateByUrl').mockResolvedValue(true);const fixture=TestBed.createComponent(TenantSelectionPage);fixture.detectChanges();fixture.nativeElement.querySelector('.tenant-card').click();http.expectOne(`${base}/switch-tenant`).flush({accessToken:'a',refreshToken:'r',accessTokenExpiresAtUtc:''});expect(nav).toHaveBeenCalledWith('/home');});
+ it('keeps selection screen and shows a useful switch failure',()=>{auth.tenants.set([tenants[0]]);const fixture=TestBed.createComponent(TenantSelectionPage);fixture.detectChanges();fixture.nativeElement.querySelector('.tenant-card').click();http.expectOne(`${base}/switch-tenant`).flush({message:'Forbidden'},{status:403,statusText:'Forbidden'});fixture.detectChanges();expect(fixture.nativeElement.textContent).toContain('Could not switch workspaces');expect(auth.currentTenant()).toBeNull();});
+ it('displays authenticated user and currently selected workspace on home',()=>{auth.currentUser.set(user);auth.tenants.set([tenants[0]]);auth.currentTenant.set(tenants[0]);const fixture=TestBed.createComponent(HomePage);fixture.detectChanges();expect(fixture.nativeElement.textContent).toContain('Welcome, Riley');expect(fixture.nativeElement.textContent).toContain('Planner fixture');});
+ it('logs out from the application shell and clears auth state',()=>{storage.pair={accessToken:'a',refreshToken:'r',accessTokenExpiresAtUtc:''};auth.currentUser.set(user);const router=TestBed.inject(Router);const nav=vi.spyOn(router,'navigateByUrl').mockResolvedValue(true);const fixture=TestBed.createComponent(AppShell);fixture.detectChanges();fixture.nativeElement.querySelector('.user-menu button:last-child').click();http.expectOne(`${base}/logout`).flush({message:'Signed out'});expect(storage.refreshToken).toBeNull();expect(auth.currentUser()).toBeNull();expect(nav).toHaveBeenCalledWith('/login');});
+});
